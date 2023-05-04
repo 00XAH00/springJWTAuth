@@ -15,8 +15,6 @@ class User(private val userService: UserService) {
 
     @PostMapping("/auth")
     fun userAuth(@RequestBody userAuth: UserAuth, response: HttpServletResponse): String {
-        print("user login: ${userAuth.userLogin}\n")
-        print("user password: ${userAuth.userPassword}\n")
 
         if (!userService.validateUserPassword(user = userAuth)) {
             response.status = 401
