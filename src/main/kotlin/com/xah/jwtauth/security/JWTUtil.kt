@@ -1,26 +1,30 @@
 package com.xah.jwtauth.security
 
 import io.jsonwebtoken.Jwts
+import io.jsonwebtoken.SignatureAlgorithm
 import io.jsonwebtoken.security.Keys
 import jakarta.servlet.http.HttpServletRequest
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import java.util.*
+import javax.crypto.SecretKey
+
 
 @Component
 class JWTUtil {
 
-    @Value("\${jwtAuth.secretToken}")
-    private lateinit var secretToken: String
+    val secretToken: SecretKey = Keys.secretKeyFor(SignatureAlgorithm.HS512)
     @Value("\${jwtAuth.tokenExpireMilliseconds}")
     private var tokenExpireMilliseconds: Int = 0
 
     fun generateToken(userLogin: String): String {
         val claims = Jwts.claims().setSubject(userLogin)
+
+
         return Jwts.builder()
             .setClaims(claims)
             .setExpiration(Date(System.currentTimeMillis() + tokenExpireMilliseconds))
-            .signWith(Keys.hmacShaKeyFor(secretToken.toByteArray()))
+            .signWith(secretToken)
             .compact()
     }
 
