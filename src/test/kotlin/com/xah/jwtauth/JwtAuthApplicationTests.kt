@@ -23,7 +23,6 @@ class DownloadControllerTest(@LocalServerPort port: String) : StringSpec() {
     init {
         RestAssured.port = port.toInt()
         RestAssured.baseURI = "http://localhost"
-        lateinit var token: String
 
         "auth user" {
             val requestBody = """
