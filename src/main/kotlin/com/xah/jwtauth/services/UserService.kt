@@ -3,19 +3,23 @@ package com.xah.jwtauth.services
 import com.xah.jwtauth.dataClasses.UserAuth
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.security.Keys
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
 class UserService {
 
+    @Value("\${jwtAuth.secretToken}") private val secretToken: String = ""
+    @Value("\${jwtAuth.tokenExpireMilliseconds}") private val tokenExpireMilliseconds: Int = 0
     private val userPassword: String = "UserPasswd"
     private val userLogin: String = "TestUser"
 
-    fun generateJwt(): String = Jwts.builder()
-        .setSubject("user@example.com")
-        .setExpiration(Date(System.currentTimeMillis() + 3600000)) // 1 hour
-        .signWith(Keys.hmacShaKeyFor("Mega Super SecretKey Powered By XAH in 2023".toByteArray()))
+
+    fun generateJwt(userLogin: String): String = Jwts.builder()
+        .setSubject(userLogin)
+        .setExpiration(Date(System.currentTimeMillis() + tokenExpireMilliseconds))
+        .signWith(Keys.hmacShaKeyFor(secretToken.toByteArray()))
         .compact()
 
     fun validateUserPassword(user: UserAuth): Boolean =
