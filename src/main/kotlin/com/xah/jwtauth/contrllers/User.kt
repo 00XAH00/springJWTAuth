@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
+
 @RestController
 @RequestMapping("/user")
 class User(private val userService: UserService) {
@@ -26,8 +27,8 @@ class User(private val userService: UserService) {
         return userService.generateJwt(userAuth.userLogin)
     }
 
-    @PostMapping("/update")
-    fun userUpdate(@RequestBody userAuth: UserAuth, response: HttpServletResponse): String {
-        return "hello"
+    @PostMapping("/getMe")
+    fun getMe(): String {
+        return "your login is ${userService.getUserLogin()}"
     }
 }
