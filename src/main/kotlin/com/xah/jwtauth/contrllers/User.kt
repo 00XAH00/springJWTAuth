@@ -25,4 +25,9 @@ class User(private val userService: UserService) {
         response.status = 200
         return userService.generateJwt(userAuth.userLogin)
     }
+
+    @PostMapping("/update")
+    fun userUpdate(@RequestBody userAuth: UserAuth, response: HttpServletResponse): String {
+        return "hello"
+    }
 }
